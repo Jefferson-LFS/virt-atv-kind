@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: deploy-virt
+  name: deploy-virt
+  namespace: virtualizacao
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-virt
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: deploy-virt
+    spec:
+      containers:
+        - image: httpd:2.4.41-alpine
+          name: httpd
+          volumeMounts:
+            - mountPath: /tmp/data
+              name: data-volume
+
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: virt-pvc
+status: {}
